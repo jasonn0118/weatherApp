@@ -1,10 +1,20 @@
 import React, { useEffect } from 'react';
+import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import './App.css';
 import NavBar from './component/NavBar';
 
-function App() {
-  const exampleAPI = `http://api.openweathermap.org/data/2.5/weather?q=London&appid=${process.env.REACT_APP_API_KEY}`;
-  // const exampleAPI = `api.openweathermap.org/data/2.5/weather?q=London&appid=694f607c6ee2b1b4a6ab45f7197d5362`;
+const useStyles = makeStyles((theme: Theme) => 
+  createStyles({
+    grow: {
+      flexGrow: 1,
+    }
+  }),
+);
+
+export default function App() {
+  const classes = useStyles();
+  const exampleAPI = `https://api.openweathermap.org/data/2.5/weather?q=London&appid=${process.env.REACT_APP_API_KEY}`;
+
   useEffect(() => {
     getWeather();
   }, []);
@@ -12,10 +22,8 @@ function App() {
   const getWeather = async () => {
     try{
       const fetch_data = await fetch(exampleAPI);
-      console.log(fetch_data)
       const responseData = await fetch_data.json();
-  
-      console.log(responseData);
+      console.log(responseData, "\n>>>>> deployed");
     } catch(error) {
       console.log(error)
     }
@@ -23,7 +31,7 @@ function App() {
   };
 
   return (
-    <div className='App'>
+    <div className={classes.grow}>
       <NavBar />
       <div className="main-content">
         This is Main display
@@ -31,5 +39,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
