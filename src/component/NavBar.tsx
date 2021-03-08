@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { AppBar, Badge, IconButton, InputBase, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Badge, Button, FormGroup, IconButton, InputBase, Toolbar, Typography } from '@material-ui/core';
 import { Notifications, Search } from '@material-ui/icons';
+import { useHistory } from 'react-router-dom';
 
-const useStyles = makeStyles((theme: Theme) => 
+
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     grow: {
       flexGrow: 1,
@@ -13,6 +15,10 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
+    },
+    searchForm: {
+      display:'flex',
+      flexDirection: 'inherit'
     },
     search: {
       position: 'relative',
@@ -55,46 +61,59 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const NavBar = () => {
-
   const classes = useStyles();
-  const [searchString, setSeachString] = useState('');
+  const history = useHistory();
+  const [searchString, setSearchString] = useState('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSeachString(event.target.value);
-  }           
+    setSearchString(event.target.value);
+  }
+
+  const onSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    history.push(`/weather?search=${searchString}`);
+  }
 
   return (
     <div className={classes.grow}>
-        <AppBar position="static">
-          <Toolbar>
-              <Typography variant="h5" className={classes.title}>
-                  Weather App
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h5" className={classes.title}>
+            Weather App
               </Typography>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <Search />
-                </div>
-                {/* This is feature that search weather by location */}
-                <InputBase
-                  placeholder="Search..."
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput
-                  }}
-                  inputProps={{'aria-label':'search'}}
-                  onChange={handleInputChange}
-                />
+         
+            <form className={classes.searchForm} onSubmit={onSearchSubmit}>
+            <div className={classes.search}>
+            {/* This is feature that search weather by location */}
+              <div className={classes.searchIcon}>
+                <Search />
               </div>
-              <div className={classes.grow} />
-              <div className="">
-                  <IconButton color="inherit">
-                    <Badge badgeContent={3} color="secondary">
-                      <Notifications />
-                    </Badge>
-                  </IconButton>
+              <InputBase
+                placeholder="Search..."
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={handleInputChange}
+              />
               </div>
-          </Toolbar>
-        </AppBar>
+              <div>
+                <Button variant="contained" color="secondary" type="submit">
+                  Search
+                </Button>
+              </div>
+            </form>
+          <div className={classes.grow} />
+          <div className="">
+            <IconButton color="inherit">
+              <Badge badgeContent={3} color="secondary">
+                <Notifications />
+              </Badge>
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 };
