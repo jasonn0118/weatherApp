@@ -1,3 +1,4 @@
 export interface IErrorTypes {
-    isError: boolean
+    isError: boolean,
+    errorMessage: any
 }
