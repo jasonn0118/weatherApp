@@ -36,5 +36,10 @@ export interface IWeatherDataTypes {
     id: number;
     name: string;
     cod: number;
+};
 
+export enum WeatherActionTypes {
+    FETCH_WEATHER_REQUEST = 'FETCH_WEATHER_REQUEST',
+    FETCH_WEATHER_SUCCESS = 'FETCH_WEATHER_SUCCESS',
+    FETCH_WEATHER_FAILURE = 'FETCH_WEATHER_FAILURE'
 }

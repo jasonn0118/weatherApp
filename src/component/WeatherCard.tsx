@@ -33,6 +33,46 @@ const useStyles = makeStyles({
     }
 });
 
+const initialWeatherState: IWeatherDataTypes = {
+    coord: {
+        lon: 0,
+        lat: 0
+    },
+    weather: [
+        {
+            id: 0,
+            main: "",
+            description: "",
+            icon: "",
+        }
+    ],
+    main: {
+        temp: 0,
+        feels_like: 0,
+        temp_min: 0,
+        temp_max: 0,
+        pressure: 0,
+        humidity: 0,
+    },
+    visibility: 0,
+    wind: {
+        speed: 0,
+        deg: 0,
+    },
+    clouds: {
+        all: 0,
+    },
+    sys: {
+        country: "",
+        sunrise: 0,
+        sunset: 0,
+    },
+    timezone: 0,
+    id: 0,
+    name: "",
+    cod: 0
+};
+
 const AntSwitch = withStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -69,47 +109,8 @@ const AntSwitch = withStyles((theme: Theme) =>
     }),
 )(Switch);
 
-const WeatherCard = (props: any) => {
-    const initialWeatherState: IWeatherDataTypes = {
-        coord: {
-            lon: 0,
-            lat: 0
-        },
-        weather: [
-            {
-                id: 0,
-                main: "",
-                description: "",
-                icon: "",
-            }
-        ],
-        main: {
-            temp: 0,
-            feels_like: 0,
-            temp_min: 0,
-            temp_max: 0,
-            pressure: 0,
-            humidity: 0,
-        },
-        visibility: 0,
-        wind: {
-            speed: 0,
-            deg: 0,
-        },
-        clouds: {
-            all: 0,
-        },
-        sys: {
-            country: "",
-            sunrise: 0,
-            sunset: 0,
-        },
-        timezone: 0,
-        id: 0,
-        name: "",
-        cod: 0
-    };
-
+const WeatherCard : React.FC  = (props: any) => {
+    
     const [isFerh, setIsFerh] = useState(true);
     const [currentCity, setCurrentCity] = useState(initialWeatherState);
     const [isLoading, setIsLoading] = useState(true);
@@ -119,11 +120,7 @@ const WeatherCard = (props: any) => {
 
     useEffect(() => {
         getWeather();
-    }, [searchString]);
-
-    useEffect(() => {
-        getWeather();
-    }, [isFerh]);
+    }, [searchString, isFerh]);
 
     const getWeather = async () => {
         try {
@@ -142,11 +139,9 @@ const WeatherCard = (props: any) => {
         }
     };
 
-    
-
     const handleSwitchTrigger = (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsFerh(event.target.checked);
-    }
+    };
     
     const classes = useStyles();
     return (
@@ -163,7 +158,7 @@ const WeatherCard = (props: any) => {
                                     <Grid component="label" container alignItems="center" spacing={1}>
                                         <Grid item>Cel</Grid>
                                         <Grid item>
-                                            <AntSwitch checked={isFerh} onChange={handleSwitchTrigger} name="checkedC" />
+                                            <AntSwitch checked={isFerh} onChange={handleSwitchTrigger} name="tempCheck" />
                                         </Grid>
                                         <Grid item>Fra</Grid>
                                     </Grid>

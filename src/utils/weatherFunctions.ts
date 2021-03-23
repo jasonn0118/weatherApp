@@ -5,5 +5,4 @@ export const roundTemp = (temp: number) => {
 export const convertToLocaleTime = (timeZone: number) => {
     var date = new Date(timeZone * 1000);
     var timestr = date.toLocaleTimeString();
-
 }
