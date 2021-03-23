@@ -3,12 +3,13 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import './App.css';
 import NavBar from './component/NavBar';
+import Weather from './component/Weather';
 import WeatherCard from './component/WeatherCard';
 import WeatherDetail from './component/WeatherDetail';
 
 const useStyles = makeStyles((theme: Theme) => 
   createStyles({
-    grow: {
+    root: {
       flexGrow: 1,
     },
     container: {
@@ -16,9 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100vh',
       justifyContent: "center",
       alignItems: "center"
-    },
-    mainCard: {
-      
     }
   }),
 );
@@ -27,14 +25,11 @@ export default function App() {
   const classes = useStyles();
 
   return (
-    <div className={classes.grow}>
+    <div className={classes.root}>
       <NavBar />
       <div className={classes.container}>
-        <Switch>
-          <Route exact path="/weather" component={WeatherCard} />
-        </Switch>
+        <Weather />
       </div>
-      
     </div>
   );
 }
