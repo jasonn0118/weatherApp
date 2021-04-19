@@ -63,15 +63,15 @@ const useStyles = makeStyles((theme: Theme) =>
 const NavBar = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [searchString, setSearchString] = useState('');
+  const [city, setCity] = useState('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchString(event.target.value);
+    setCity(event.target.value);
   }
 
   const onSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    history.push(`/weather?search=${searchString}`);
+    history.push(`/weather/${city}`);
   }
 
   return (

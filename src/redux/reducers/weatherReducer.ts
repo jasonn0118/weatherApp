@@ -49,18 +49,20 @@ const initialState: IWeatherState = {
     },
     loading: false,
     error: {
-        isError: false
+        isError: false,
+        errorMessage: null
     }
 };
 
-export const weatherReducer = (state: IWeatherState = initialState, action: { type: WeatherActionTypes; payload: any }) => {
+export const weatherReducer = (state = initialState, action: { type: WeatherActionTypes; payload: any }) => {
     switch (action.type) {
         case WeatherActionTypes.FETCH_WEATHER_REQUEST:
+            console.log('FETCH_WEATHER_REQUEST');
             return {
                 ...state,
                 loading: true
             }
-        case WeatherActionTypes.FETCH_WEATHER_SUCCESS: 
+        case WeatherActionTypes.FETCH_WEATHER_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -69,9 +71,13 @@ export const weatherReducer = (state: IWeatherState = initialState, action: { ty
         case WeatherActionTypes.FETCH_WEATHER_FAILURE:
             return {
                 ...state,
+                loading: false,
                 error: {
-                    isError: true
+                    isError: true,
+                    errorMessage: action.payload.err
                 }
             }
+        default:
+            return state
     }
 }

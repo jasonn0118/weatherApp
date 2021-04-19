@@ -7,7 +7,7 @@ import Weather from './component/Weather';
 import WeatherCard from './component/WeatherCard';
 import WeatherDetail from './component/WeatherDetail';
 
-const useStyles = makeStyles((theme: Theme) => 
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
@@ -27,9 +27,14 @@ export default function App() {
   return (
     <div className={classes.root}>
       <NavBar />
-      <div className={classes.container}>
-        <Weather />
-      </div>
+      <Switch>
+        <Route path="/weather/:city">
+          <div className={classes.container}>
+            <Weather />
+          </div>
+        </Route>
+      </Switch>
+
     </div>
   );
 }

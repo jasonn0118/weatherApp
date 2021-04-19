@@ -11,10 +11,13 @@ import sunnyImage from '../images/sunny.jpg';
 import { CardHeader, createStyles, FormGroup, Grid, Theme, withStyles } from '@material-ui/core';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import { CircularProgress } from '@material-ui/core';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { IWeatherDataTypes } from '../types/weatherTypes';
 import { fetchWeatherData } from '../config/apiKeys';
 import { roundTemp } from '../utils/weatherFunctions';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppStore } from '../store/appStore';
+import { fetchWeatherAPI, fetchWeatherRequest } from '../redux/actions/weatherActions';
 
 const useStyles = makeStyles({
     root: {
@@ -109,44 +112,58 @@ const AntSwitch = withStyles((theme: Theme) =>
     }),
 )(Switch);
 
-const WeatherCard : React.FC  = (props: any) => {
-    
-    const [isFerh, setIsFerh] = useState(true);
-    const [currentCity, setCurrentCity] = useState(initialWeatherState);
-    const [isLoading, setIsLoading] = useState(true);
-    const { search } = useLocation();
-    const searchPrams = new URLSearchParams(search);
-    const searchString = searchPrams.get('search');
+const WeatherCard: React.FC = (props: any) => {
+    const { weather, error } = useSelector((store: AppStore) => ({
+        weather: store.weather.weatherData,
+        error: store.weather.error
+    }));
+    const { city } : any = useParams();
+    const dispatch = useDispatch();
+
+
+    // const classes = useStyles();
+    // const [isFerh, setIsFerh] = useState(true);
+    // const [currentCity, setCurrentCity] = useState(initialWeatherState);
+    // const [isLoading, setIsLoading] = useState(true);
+    // const { search } = useLocation();
+    // const searchPrams = new URLSearchParams(search);
+    // const searchString = searchPrams.get('search');
+    // if(!searchString) {
+    //     return <></>;
+    // }
 
     useEffect(() => {
-        getWeather();
-    }, [searchString, isFerh]);
+        dispatch(fetchWeatherAPI(city, "imperial"));
+    }, [])
 
-    const getWeather = async () => {
-        try {
-            if (isFerh) {
-                var fetch_data = await fetchWeatherData(searchString, "imperial");
-            } else {
-                fetch_data = await fetchWeatherData(searchString, "metric");
-            }
-            console.log(fetch_data);
-            const responseData = await fetch_data.json();
-            console.log(responseData, "\n>>>>> deployed");
-            setCurrentCity(responseData);
-            setIsLoading(false);
-        } catch (error) {
-            console.log(error)
-        }
-    };
+    // dispatch(fetchWeatherAPI("London", "imperial"));
+    // useEffect(() => {
+    //     getWeather();
+    // }, [searchString, isFerh]);
 
-    const handleSwitchTrigger = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setIsFerh(event.target.checked);
-    };
-    
-    const classes = useStyles();
+    // const getWeather = async () => {
+    //     try {
+    //         if (isFerh) {
+    //             var fetch_data = await fetchWeatherData(searchString, "imperial");
+    //         } else {
+    //             fetch_data = await fetchWeatherData(searchString, "metric");
+    //         }
+    //         const responseData = await fetch_data.json();
+    //         setCurrentCity(responseData);
+    //         setIsLoading(false);
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // };
+
+    // const handleSwitchTrigger = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setIsFerh(event.target.checked);
+    // };
+
+
     return (
         <div>
-            { isLoading ? (
+            {/* { isLoading ? (
                 <CircularProgress />
             ) : currentCity && (
                 <Card className={classes.root}>
@@ -185,7 +202,7 @@ const WeatherCard : React.FC  = (props: any) => {
                             </Button>
                     </CardActions>
                 </Card>
-            )}
+            )} */}
         </div>
 
     );
