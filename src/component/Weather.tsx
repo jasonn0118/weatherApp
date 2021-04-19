@@ -6,7 +6,6 @@ const Weather: React.FC = () => {
     return (
         <div>
             <WeatherCard />
-            {/* <WeatherDetail /> */}
         </div>
     )
 }
