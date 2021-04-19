@@ -11,7 +11,7 @@ import sunnyImage from '../images/sunny.jpg';
 import { CardHeader, createStyles, FormGroup, Grid, Theme, withStyles } from '@material-ui/core';
 import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
 import { CircularProgress } from '@material-ui/core';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { IWeatherDataTypes } from '../types/weatherTypes';
 import { fetchWeatherData } from '../config/apiKeys';
 import { roundTemp } from '../utils/weatherFunctions';
@@ -113,13 +113,14 @@ const AntSwitch = withStyles((theme: Theme) =>
 )(Switch);
 
 const WeatherCard: React.FC = (props: any) => {
-    const {weather, error} = useSelector((store: AppStore) => ({
+    const { weather, error } = useSelector((store: AppStore) => ({
         weather: store.weather.weatherData,
         error: store.weather.error
     }));
-    console.log('----> weather', weather);
-    console.log('----> error', error);
+    const { city } : any = useParams();
     const dispatch = useDispatch();
+
+
     // const classes = useStyles();
     // const [isFerh, setIsFerh] = useState(true);
     // const [currentCity, setCurrentCity] = useState(initialWeatherState);
@@ -132,7 +133,7 @@ const WeatherCard: React.FC = (props: any) => {
     // }
 
     useEffect(() => {
-        dispatch(fetchWeatherAPI("London", "imperial"));
+        dispatch(fetchWeatherAPI(city, "imperial"));
     }, [])
 
     // dispatch(fetchWeatherAPI("London", "imperial"));
